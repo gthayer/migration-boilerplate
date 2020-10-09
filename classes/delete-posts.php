@@ -14,7 +14,13 @@ class DeletePosts extends MigrationCommand {
 	 * @param array $assoc_args
 	 * @return void
 	 */
-	function delete_posts( $args, $assoc_args ) {
+	public function delete_posts( $args, $assoc_args ) {
+
+		// Move the file path into the object.
+		if ( isset( $assoc_args['file-path'] ) ) {
+			$this->file_path = $assoc_args['file-path'];
+			unset( $assoc_args['file-path'] );
+		}
 
 		$default_args = [
 			'fields'         => 'ids',
@@ -42,7 +48,7 @@ class DeletePosts extends MigrationCommand {
 	 * @param int $post_id The post ID.
 	 * @return void
 	 */
-	public static function callback( $post_id ) {
-		//var_dump( $post_id );
+	public function callback( $post_id ) {
+		//var_dump( $this->file_path );
 	}
 }

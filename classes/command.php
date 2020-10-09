@@ -7,13 +7,9 @@ namespace MigrationBoilerplate;
 
 abstract class MigrationCommand {
 
-	abstract protected static function callback( $post_id );
+	abstract protected function callback( $post_id );
 
 	public function __construct() {
-
-		// Set the callback name. This will grab the class and namespace for the command being run.
-		$this->callback    = get_class( $this ) . '::callback';
-		
 		// Set the default processing numbers.
 		$this->processed   = 0;
 		$this->found_posts = 0;
@@ -58,7 +54,7 @@ abstract class MigrationCommand {
 		// Loop over each post and run the callback function for the specific command.
 		foreach ( $query->posts as $post ) {
 			$this->processed++;
-			call_user_func( $this->callback, $post );
+			call_user_func( array( $this, 'callback' ), $post );
 			$this->progress->tick();
 		}
 
