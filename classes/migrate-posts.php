@@ -25,13 +25,12 @@ class MigratePosts extends MigrationCommand {
 			'posts_per_page' => '20',
 		];
 
-		$args = wp_parse_args( $assoc_args, $default_args );
+		$assoc_args = wp_parse_args( $assoc_args, $default_args );
 
-		$result = $this->query_posts( $args );
-
-		while ( true !== $result ) {
-			$args['offset'] = $result['processed'];
-			$result = $this->query_posts( $args, $result['processed'], $result['found_posts'] );
+		$result     = $this->query_posts( $assoc_args );
+		while ( ! $result ) {
+			$assoc_args['offset'] = $result['processed'];
+			$result               = $this->query_posts( $assoc_args );
 		}
 
 		success( "Migration Complete!" );
@@ -40,11 +39,10 @@ class MigratePosts extends MigrationCommand {
 	/**
 	 * The callback which effects the individual post.
 	 *
-	 * @param obj $post Wp Post object
+	 * @param int $post_id The post ID.
 	 * @return void
 	 */
-	public function callback( $post ) {
-		var_dump( $post );
-		exit;
+	public static function callback( $post_id ) {
+		//var_dump( $post_id );
 	}
 }
