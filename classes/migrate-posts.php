@@ -25,7 +25,7 @@ class MigratePosts extends MigrationCommand {
 			'posts_per_page' => '20',
 		];
 
-		$args      = wp_parse_args( $assoc_args, $default_args );
+		$args = wp_parse_args( $assoc_args, $default_args );
 
 		$result = $this->query_posts( $args );
 
@@ -35,5 +35,16 @@ class MigratePosts extends MigrationCommand {
 		}
 
 		success( "Migration Complete!" );
+	}
+
+	/**
+	 * The callback which effects the individual post.
+	 *
+	 * @param obj $post Wp Post object
+	 * @return void
+	 */
+	public function callback( $post ) {
+		var_dump( $post );
+		exit;
 	}
 }

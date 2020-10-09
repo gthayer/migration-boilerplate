@@ -36,4 +36,15 @@ class DeletePosts extends MigrationCommand {
 
 		success( "Deletion Complete!" );
 	}
+
+	/**
+	 * The callback which effects the individual post.
+	 *
+	 * @param obj $post Wp Post object
+	 * @return void
+	 */
+	public function callback( $post ) {
+		var_dump( $post );
+		exit;
+	}
 }
