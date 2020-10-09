@@ -7,8 +7,10 @@
 	"autoload": {
 		"files": [
 			"includes/class-wp-cli-command.php",
-			"includes/migrate-posts.php",
-			"includes/logging.php"
+			"includes/logging.php",
+			"classes/command.php",
+			"classes/migrate-posts.php",
+			"classes/delete-posts.php"
 		]
 	}
 }
