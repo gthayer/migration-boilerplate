@@ -60,21 +60,16 @@ class DeletePosts extends MigrationCommand {
 	 * @return void
 	 */
 	public function callback( $post_id ) {
+		$permalink = get_post_permalink( $post_id );
 
-		if ( post_exists( $post_id ) ) {
-
-			$permalink = get_post_permalink( $post_id );
-
-			if ( is_wp_error( $permalink ) ) {
-				error( "ID {$post_id}: " . $permalink->get_error_message() );
-			}
-
-			$this->redirects[ $post_id ] = $permalink;
-			//$resp = wp_delete_post( $post_id, true );
-
-		} else {
-			error( "Post {$post_id} does not exist." );
+		if ( is_wp_error( $permalink ) ) {
+			error( "ID {$post_id}: " . $permalink->get_error_message() );
 		}
+
+		$this->redirects[ $post_id ] = $permalink;
+		$resp = wp_delete_post( $post_id, true );
+
+		success( "Deleted post {$post_id}" );
 	}
 
 	/**
