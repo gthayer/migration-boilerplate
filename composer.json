@@ -6,6 +6,7 @@
 	},
 	"autoload": {
 		"files": [
+			"includes/utils.php",
 			"includes/class-wp-cli-command.php",
 			"includes/logging.php",
 			"classes/command.php",

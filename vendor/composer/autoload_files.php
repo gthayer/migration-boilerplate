@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'acea4f16e77410ef7d0fefa10a55e9eb' => $baseDir . '/includes/utils.php',
     '4399624e6aac3215ab50dd54f8f7313e' => $baseDir . '/includes/class-wp-cli-command.php',
     '109a2fed12bf1de1ba88141eaadc3674' => $baseDir . '/includes/logging.php',
     '76e982ab342b609cbf4ad6bce6ce7b46' => $baseDir . '/classes/command.php',

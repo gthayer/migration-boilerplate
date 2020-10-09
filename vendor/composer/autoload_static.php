@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit73117a05635f48f492b10fb02c9dea2d
 {
     public static $files = array (
+        'acea4f16e77410ef7d0fefa10a55e9eb' => __DIR__ . '/../..' . '/includes/utils.php',
         '4399624e6aac3215ab50dd54f8f7313e' => __DIR__ . '/../..' . '/includes/class-wp-cli-command.php',
         '109a2fed12bf1de1ba88141eaadc3674' => __DIR__ . '/../..' . '/includes/logging.php',
         '76e982ab342b609cbf4ad6bce6ce7b46' => __DIR__ . '/../..' . '/classes/command.php',

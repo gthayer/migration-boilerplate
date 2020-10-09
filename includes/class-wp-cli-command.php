@@ -39,21 +39,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 */
 	public function migrate( $args, $assoc_args ) {
 
-		// Organize the params to be better consumed by WP_Query.
-		if ( ! empty( $assoc_args['per-page'] ) ) {
-			$assoc_args['posts_per_page'] = absint( $assoc_args['per-page'] );
-			unset( $assoc_args['per-page'] );
-		}
-
-		if ( ! empty( $assoc_args['offset'] ) ) {
-			$assoc_args['offset'] = absint( $assoc_args['offset'] );
-		}
-
-		if ( ! empty( $assoc_args['include'] ) ) {
-			$include                = explode( ',', str_replace( ' ', '', $assoc_args['include'] ) );
-			$assoc_args['include']  = array_map( 'absint', $include );
-			$assoc_args['per-page'] = count( $assoc_args['include'] );
-		}
+		$assoc_args = filter_cli_args( $assoc_args );
 
 		$MigratePosts = new MigratePosts();
 		$MigratePosts->migrate_posts( $args, $assoc_args );
@@ -84,21 +70,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 */
 	public function delete( $args, $assoc_args ) {
 		
-		// Organize the params to be better consumed by WP_Query.
-		if ( ! empty( $assoc_args['per-page'] ) ) {
-			$assoc_args['posts_per_page'] = absint( $assoc_args['per-page'] );
-			unset( $assoc_args['per-page'] );
-		}
-
-		if ( ! empty( $assoc_args['offset'] ) ) {
-			$assoc_args['offset'] = absint( $assoc_args['offset'] );
-		}
-
-		if ( ! empty( $assoc_args['include'] ) ) {
-			$include                = explode( ',', str_replace( ' ', '', $assoc_args['include'] ) );
-			$assoc_args['include']  = array_map( 'absint', $include );
-			$assoc_args['per-page'] = count( $assoc_args['include'] );
-		}
+		$assoc_args = filter_cli_args( $assoc_args );
 
 		$DeletePosts = new DeletePosts();
 		$DeletePosts->delete_posts( $args, $assoc_args );
