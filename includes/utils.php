@@ -31,3 +31,15 @@ function filter_cli_args( $assoc_args ) {
 
 	return $assoc_args;
 }
+
+/**
+ * Check if the post exists by ID
+ * 
+ * https://tommcfarlin.com/wordpress-post-exists-by-id/
+ *
+ * @param int $post_id The post ID
+ * @return void
+ */
+function post_exists( $post_id ) {
+	return is_string( get_post_status( $post_id ) );
+}
