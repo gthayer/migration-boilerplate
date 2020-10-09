@@ -7,7 +7,7 @@ namespace MigrationBoilerplate;
 
 abstract class MigrationCommand {
 
-	abstract protected function callback();
+	abstract protected function callback( $post );
 
 	public function __construct() {
 		$this->callback = get_class( $this ) . '::callback';
