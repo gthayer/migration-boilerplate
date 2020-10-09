@@ -10,7 +10,6 @@ class DeletePosts extends MigrationCommand {
 	public function __construct() {
 		parent::__construct();
 
-		$this->file_path = '';
 		$this->redirects = [];
 	}
 
@@ -38,7 +37,7 @@ class DeletePosts extends MigrationCommand {
 			'post__in'            => [],
 			'post_status'         => 'any',
 			'post_type'           => 'any',
-			'posts_per_page'      => '20',
+			'posts_per_page'      => '100',
 		];
 
 		$assoc_args = wp_parse_args( $assoc_args, $default_args );

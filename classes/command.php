@@ -13,6 +13,7 @@ abstract class MigrationCommand {
 		// Set the default processing numbers.
 		$this->processed   = 0;
 		$this->found_posts = 0;
+		$this->file_path   = '';
 	}
 
 	/**
@@ -63,8 +64,11 @@ abstract class MigrationCommand {
 			$this->progress->finish();
 			return true;
 		} else {
+
+			// Free up memory and run again.
+			stop_the_insanity();
+
 			return false;
 		}
 	}
-
 }

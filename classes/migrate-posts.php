@@ -7,6 +7,10 @@ namespace MigrationBoilerplate;
 
 class MigratePosts extends MigrationCommand {
 
+	public function __construct() {
+		parent::__construct();
+	}
+
 	/**
 	 * Migrate posts
 	 *
@@ -20,6 +24,8 @@ class MigratePosts extends MigrationCommand {
 		if ( isset( $assoc_args['file-path'] ) ) {
 			$this->file_path = $assoc_args['file-path'];
 			unset( $assoc_args['file-path'] );
+
+			$assoc_args['post__in'] = $this->get_post_includes();
 		}
 
 		$default_args = [
@@ -28,7 +34,7 @@ class MigratePosts extends MigrationCommand {
 			'offset'         => '0',
 			'post_status'    => 'any',
 			'post_type'      => 'press',
-			'posts_per_page' => '20',
+			'posts_per_page' => '100',
 		];
 
 		$assoc_args = wp_parse_args( $assoc_args, $default_args );

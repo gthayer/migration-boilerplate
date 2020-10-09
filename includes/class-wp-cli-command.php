@@ -42,10 +42,12 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 */
 	public function migrate( $args, $assoc_args ) {
 
+		define( 'WP_IMPORTING', true );
+
 		$assoc_args = filter_cli_args( $assoc_args );
 
-		$MigratePosts = new MigratePosts();
-		$MigratePosts->migrate_posts( $args, $assoc_args );
+		$migratePosts = new MigratePosts();
+		$migratePosts->migrate_posts( $args, $assoc_args );
 	}
 
 	/**
@@ -75,10 +77,12 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
 	 */
 	public function delete( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
 		
 		$assoc_args = filter_cli_args( $assoc_args );
 
-		$DeletePosts = new DeletePosts();
-		$DeletePosts->delete_posts( $args, $assoc_args );
+		$deletePosts = new DeletePosts();
+		$deletePosts->delete_posts( $args, $assoc_args );
 	}
 }
