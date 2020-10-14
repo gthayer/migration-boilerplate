@@ -44,7 +44,7 @@ class DeletePosts extends MigrationCommand {
 
 		$result     = $this->query_posts( $assoc_args );
 		while ( ! $result ) {
-			$assoc_args['offset'] = $result['processed'];
+			$assoc_args['offset'] = $this->processed;
 			$result               = $this->query_posts( $assoc_args );
 		}
 
@@ -107,6 +107,11 @@ class DeletePosts extends MigrationCommand {
 		$i        = 0;
 	
 		$handle = fopen( $this->file_path, 'r' );
+
+		if ( false === $handle ) {
+			error( 'File can not be found' );
+		}
+
 		while ( ( $data = fgetcsv( $handle ) ) !== FALSE ) {			
 
 			// Skip the header.
