@@ -12,4 +12,5 @@ return array(
     '76e982ab342b609cbf4ad6bce6ce7b46' => $baseDir . '/classes/command.php',
     '59a49f67a7b4159a2d7179880a08a3fd' => $baseDir . '/classes/migrate-posts.php',
     'd5ca4536adf484ff6897f8431ad62c59' => $baseDir . '/classes/delete-posts.php',
+    'd046fbc0c33f22264845995c80c9ba93' => $baseDir . '/classes/change-post-types.php',
 );

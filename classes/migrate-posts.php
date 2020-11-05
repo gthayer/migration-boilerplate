@@ -66,7 +66,7 @@ class MigratePosts extends MigrationCommand {
 
 		// Restructure the data into something useable.
 		$csv       = array_map( 'str_getcsv', $file );
-		$csv       = $this->rekey_csv_array( $csv );
+		$csv       = rekey_csv_array( $csv, 0 );
 		$post_data = $csv[ $post_id ];
 
 		if ( empty( $post_data ) ) {
@@ -79,7 +79,7 @@ class MigratePosts extends MigrationCommand {
 		}
 
 		$current_terms = get_the_terms( $post_id, 'story_category' );
-		$new_terms     = $this->get_new_terms( $post_data );
+		$new_terms     = get_new_terms( $post_data, 'story_category', [8,9,10] );
 
 		if ( ! empty( $current_terms ) ) {
 			foreach ( $current_terms as $current_term ) {
@@ -125,70 +125,5 @@ class MigratePosts extends MigrationCommand {
 		}
 
 		return $include;
-	}
-
-	/**
-	 * Rekey the CSV array so the post ids are the key for easier retrieval.
-	 *
-	 * @param array $csv The CSV data in an array format.
-	 * @return void
-	 */
-	private function rekey_csv_array( $csv ) {
-
-		$i         = 0;
-		$keyed_csv = [];
-
-		foreach( $csv as $row ) {
-
-			// Skip the header.
-			if ( 0 === $i ) {
-				$i++;
-				continue;
-			}
-
-			$keyed_csv[ $row[0] ] = $row;
-		}
-
-		return $keyed_csv;
-	}
-
-	/**
-	 * Get the terms, or create them, based on the term name in the csv.
-	 *
-	 * @param array $post_data Migration data from the CSV.
-	 * @return void
-	 */
-	private function get_new_terms( $post_data ) {
-		$new_term_names = [];
-		$new_terms      = [];
-
-		// Get terms from specific columns. 
-		if ( ! empty( $post_data[8] ) ) {
-			$new_term_names[] = $post_data[8];
-		}
-
-		if ( ! empty( $post_data[9] ) ) {
-			$new_term_names[] = $post_data[9];
-		}
-
-		if ( ! empty( $post_data[10] ) ) {
-			$new_term_names[] = $post_data[10];
-		}
-
-		foreach ( $new_term_names as $new_term_name ) {
-			$term = get_term_by( 'slug', sanitize_title( $new_term_name ), 'story_category' );
-
-			// If the term does not exist, create it.
-			if ( empty( $term ) ) {
-				$resp = wp_insert_term( $new_term_name, 'story_category' );
-				$term = get_term( $resp['term_id'], 'story_category' );
-			}
-
-			if ( is_a( $term, 'WP_Term' ) ) {
-				$new_terms[] = $term->term_id;
-			}
-		}
-
-		return $new_terms;
 	}
 }

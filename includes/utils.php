@@ -65,3 +65,68 @@ function stop_the_insanity() {
 		}
 	}
 }
+
+/**
+ * Rekey the CSV array so the post ids are the key for easier retrieval.
+ *
+ * @param array $csv The CSV data in an array format.
+ * @return void
+ */
+function rekey_csv_array( $csv, $pos = 0 ) {
+
+	$i         = 0;
+	$keyed_csv = [];
+
+	foreach( $csv as $row ) {
+
+		// Skip the header.
+		if ( 0 === $i ) {
+			$i++;
+			continue;
+		}
+
+		$keyed_csv[ $row[ $pos ] ] = $row;
+	}
+
+	return $keyed_csv;
+}
+
+/**
+ * Get the terms, or create them, based on the term name in the csv.
+ *
+ * @param array $post_data Migration data from the CSV.
+ * @return void
+ */
+function get_new_terms( $post_data, $taxonomy, $pos_array = [] ) {
+
+	$new_term_names = [];
+	$new_terms      = [];
+
+	// Fallback to make sure the position is an array.
+	if ( ! empty( $pos_array ) && ! is_array( $pos_array ) ) {
+		$pos_array = [ $pos_array ];
+	}
+
+	foreach ( $pos_array as $pos ) {
+		// Get terms from specific columns. 
+		if ( ! empty( $post_data[ $pos ] ) ) {
+			$new_term_names[] = $post_data[ $pos ];
+		}
+	}
+
+	foreach ( $new_term_names as $new_term_name ) {
+		$term = get_term_by( 'slug', sanitize_title( $new_term_name ), $taxonomy );
+
+		// If the term does not exist, create it.
+		if ( empty( $term ) ) {
+			$resp = wp_insert_term( $new_term_name, $taxonomy );
+			$term = get_term( $resp['term_id'], $taxonomy );
+		}
+
+		if ( is_a( $term, 'WP_Term' ) ) {
+			$new_terms[] = $term->term_id;
+		}
+	}
+
+	return $new_terms;
+}

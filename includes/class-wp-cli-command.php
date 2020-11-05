@@ -43,6 +43,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	public function migrate( $args, $assoc_args ) {
 
 		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
 
 		$assoc_args = filter_cli_args( $assoc_args );
 
@@ -79,10 +80,48 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	public function delete( $args, $assoc_args ) {
 
 		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
 		
 		$assoc_args = filter_cli_args( $assoc_args );
 
 		$deletePosts = new DeletePosts();
 		$deletePosts->delete_posts( $args, $assoc_args );
+	}
+
+	/**
+	 * Change Post Types
+	 *
+	 * Change the post type of specific posts.
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @return bool
+	 *
+	 * ## OPTIONS
+	 *
+	 * [<offset>]
+	 * : Let's you skip the first n posts.
+	 *
+	 * [<per-page>]
+	 * : Let's you determine the amount of posts to be indexed per bulk index.
+	 *
+	 * [<include>]
+	 * : Choose which object IDs to include in the index.
+	 * 
+	 * [<file-path>]
+	 * : The path to a CSV to read from.
+	 *
+	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
+	 */
+	public function change_post_types( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+		
+		$assoc_args = filter_cli_args( $assoc_args );
+
+		$deletePosts = new ChangePostTypes();
+		$deletePosts->change_post_types( $args, $assoc_args );
 	}
 }

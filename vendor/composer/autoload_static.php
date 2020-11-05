@@ -13,6 +13,7 @@ class ComposerStaticInit73117a05635f48f492b10fb02c9dea2d
         '76e982ab342b609cbf4ad6bce6ce7b46' => __DIR__ . '/../..' . '/classes/command.php',
         '59a49f67a7b4159a2d7179880a08a3fd' => __DIR__ . '/../..' . '/classes/migrate-posts.php',
         'd5ca4536adf484ff6897f8431ad62c59' => __DIR__ . '/../..' . '/classes/delete-posts.php',
+        'd046fbc0c33f22264845995c80c9ba93' => __DIR__ . '/../..' . '/classes/change-post-types.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
