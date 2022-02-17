@@ -1,5 +1,5 @@
 {
-	"name": "migration-boilerplate",
+	"name": "gthayer/migration-boilerplate",
 	"type": "wordpress-plugin",
 	"require": {
 		"php": "^7.1"
