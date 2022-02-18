@@ -13,6 +13,7 @@ class ComposerStaticInitdca63f92ccb285125d488b4217695810
         '23757b9378502c31276e80069b5ff9fd' => __DIR__ . '/../..' . '/classes/command.php',
         '741773fa1c2db367e9c7d4d0c4c7c975' => __DIR__ . '/../..' . '/classes/migrate-posts.php',
         '73814e1cf77d8a427cbe19ed63753a37' => __DIR__ . '/../..' . '/classes/delete-posts.php',
+        '1f84192f6ca8a95071a4aa8ca902e740' => __DIR__ . '/../..' . '/classes/import-posts.php',
     );
 
     public static $classMap = array (

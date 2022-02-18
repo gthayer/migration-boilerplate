@@ -12,4 +12,5 @@ return array(
     '23757b9378502c31276e80069b5ff9fd' => $baseDir . '/classes/command.php',
     '741773fa1c2db367e9c7d4d0c4c7c975' => $baseDir . '/classes/migrate-posts.php',
     '73814e1cf77d8a427cbe19ed63753a37' => $baseDir . '/classes/delete-posts.php',
+    '1f84192f6ca8a95071a4aa8ca902e740' => $baseDir . '/classes/import-posts.php',
 );
