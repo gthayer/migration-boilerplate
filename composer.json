@@ -1,5 +1,5 @@
 {
-	"name": "migration-boilerplate",
+	"name": "gthayer/migration-boilerplate",
 	"type": "wordpress-plugin",
 	"require": {
 		"php": "^7.1"
@@ -11,8 +11,7 @@
 			"includes/logging.php",
 			"classes/command.php",
 			"classes/migrate-posts.php",
-			"classes/delete-posts.php",
-			"classes/change-post-types.php"
+			"classes/delete-posts.php"
 		]
 	}
 }
