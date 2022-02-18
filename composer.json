@@ -11,7 +11,8 @@
 			"includes/logging.php",
 			"classes/command.php",
 			"classes/migrate-posts.php",
-			"classes/delete-posts.php"
+			"classes/delete-posts.php",
+			"classes/import-posts.php"
 		]
 	}
 }

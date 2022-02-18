@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Main WP CLI command integration
  */
@@ -10,6 +10,7 @@ namespace MigrationBoilerplate;
 /**
  * Register migration commands.
  * Class WP_CLI_Command
+ *
  * @package MigrationBoilerplate
  */
 class WP_CLI_Command extends \WP_CLI_Command {
@@ -34,7 +35,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * [<include>]
 	 * : Choose which object IDs to include in the index.
-	 * 
+	 *
 	 * [<file-path>]
 	 * : The path to a CSV to read from.
 	 *
@@ -71,7 +72,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * [<include>]
 	 * : Choose which object IDs to include in the index.
-	 * 
+	 *
 	 * [<file-path>]
 	 * : The path to a CSV to read from.
 	 *
@@ -81,7 +82,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
-		
+
 		$assoc_args = filter_cli_args( $assoc_args );
 
 		$deletePosts = new DeletePosts();
@@ -89,9 +90,9 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	}
 
 	/**
-	 * Change Post Types
+	 * Delete Posts
 	 *
-	 * Change the post type of specific posts.
+	 * Can specify offset and the number of posts to import
 	 *
 	 * @param $args
 	 * @param $assoc_args
@@ -108,7 +109,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * [<include>]
 	 * : Choose which object IDs to include in the index.
-	 * 
+	 *
 	 * [<file-path>]
 	 * : The path to a CSV to read from.
 	 *
@@ -118,10 +119,41 @@ class WP_CLI_Command extends \WP_CLI_Command {
 
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
-		
+
 		$assoc_args = filter_cli_args( $assoc_args );
 
 		$deletePosts = new ChangePostTypes();
 		$deletePosts->change_post_types( $args, $assoc_args );
+	}
+
+	/**
+	 * Import Posts from CSV
+	 *
+	 * @todo make import command use column headers to determine data type (post_title, post_content...etc)
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @return bool
+	 *
+	 * ## OPTIONS
+	 *
+	 * [<file-path>]
+	 * : The path to a CSV to read from.
+	 *
+	 * [<term-type>]
+	 * : Term Type to apply to imported posts. This is a custom taxonomy specific to this example.
+	 *
+	 * @synopsis [--file-path=<file-path>] [--term-type=<term-type>]
+	 */
+	public function import( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+
+		$assoc_args = filter_cli_args( $assoc_args );
+
+		$importer = new ImportPosts();
+		$importer->import_posts( $args, $assoc_args );
 	}
 }
