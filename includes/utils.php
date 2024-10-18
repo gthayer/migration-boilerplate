@@ -6,6 +6,61 @@
 namespace MigrationBoilerplate;
 
 /**
+ * Download a file from a specific URL and then add it to the media library.
+ *
+ * @param string $url       URL for the file to be downloaded.
+ * @param int    $post_id   Optionally attach to a specific Post.
+ * @param string $desc      Optionally add a description to the attachment.
+ * @param array  $post_data Optionally add post data to the attachment.
+ * @param int    $timeout   Optionally change the timeout. Defaults to 30 seconds.
+ * @return int|\WP_Error Attachment ID on success.
+ */
+function download_and_sideload( $url, $post_id = 0, $desc = null, $post_data = [], $timeout = 300 ) {
+	if ( empty( $url ) ) {
+		return false;
+	}
+
+	$tmp_name = download_url( $url, $timeout );
+	if ( is_wp_error( $tmp_name ) ) {
+		return $tmp_name;
+	}
+
+	$name = basename( $url );
+	if ( ! empty( $post_data['do_rename'] ) ) {
+		/**
+		 * For some reason, PNG profile pictures are stored as .file in the URL. So we replace it with .png otherwise
+		 * WP will reject it as an invalid file type.
+		 */
+		$name = str_replace( '.file', '.png', $name );
+		unset( $post_data['do_rename'] );
+	}
+
+	if ( '.' === substr( $url, -1 ) ) {
+		$response = wp_remote_head( $url );
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return false;
+		}
+
+		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
+		foreach ( wp_get_mime_types() as $extensions => $mime_type ) {
+			if ( $content_type === $mime_type ) {
+				$extension = explode( '|', $extensions );
+				if ( empty( $extension ) ) {
+					continue;
+				}
+				$name = $name . $extension[0];
+			}
+		}
+	}
+
+	$file_array = [
+		'name'     => $name,
+		'tmp_name' => $tmp_name,
+	];
+	return media_handle_sideload( $file_array, $post_id, $desc, $post_data );
+}
+
+/**
  * Filter the args provided by the CLI script and convert them to WP_Query args.
  *
  * @param array $assoc_args WP CLI args.
@@ -129,4 +184,18 @@ function get_new_terms( $post_data, $taxonomy, $pos_array = [] ) {
 	}
 
 	return $new_terms;
+}
+
+/**
+ * Retrieves the specific shortcode from a snippet of HTML.
+ *
+ * @param string $shortcode Shortcode to extract.
+ * @param string $html      HTML to parse for shortcodes.
+ * @return string[]|null
+ */
+function extract_shortcodes( $shortcode, $html ) {
+	preg_match_all( '/\[' . $shortcode . '(?:.*?)\[\/' . $shortcode . '\]/i', $html, $matches );
+
+	// If there are no matches, return null or an empty array, depending on the use case.
+	return isset( $matches[0] ) ? $matches[0] : null;
 }
