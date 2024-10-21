@@ -9,6 +9,10 @@ abstract class MigrationCommand {
 
 	abstract protected function callback( $post_id );
 
+	public $processed;
+	public $found_posts;
+	public $file_path;
+
 	public function __construct() {
 		// Set the default processing numbers.
 		$this->processed   = 0;

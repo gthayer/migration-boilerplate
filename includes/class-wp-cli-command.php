@@ -156,4 +156,57 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		$importer = new ImportPosts();
 		$importer->import_posts( $args, $assoc_args );
 	}
+
+	/**
+	 * Create a report of content types.
+	 *
+	 * @param $args
+	 * @param $assoc_args
+	 *
+	 * @return bool
+	 * 
+	 * ## OPTIONS
+	 *
+	 * [<site>]
+	 * : The name of the site to pull content from.
+	 * 
+	 * [<offset>]
+	 * : Let's you skip the first n posts.
+	 *
+	 */
+	public function content_export_report( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+
+		$assoc_args = filter_cli_args( $assoc_args );
+
+		$importer = new ExportContentReport();
+		$importer->content_report( $args, $assoc_args );
+	}
+
+	public function content_export_missing_items( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+
+		$assoc_args = filter_cli_args( $assoc_args );
+
+		$importer = new ExportContentReport();
+		$importer->find_missing_items( $args, $assoc_args );
+	}
+
+	public function create_migration_tables( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+		Database::create_tables();
+	}
+
+	public function delete_migration_tables( $args, $assoc_args ) {
+
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+		Database::drop_tables();
+	}
 }

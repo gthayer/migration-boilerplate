@@ -2,7 +2,7 @@
 	"name": "gthayer/migration-boilerplate",
 	"type": "wordpress-plugin",
 	"require": {
-		"php": "^7.1"
+		"php": "^8.2"
 	},
 	"autoload": {
 		"files": [
@@ -12,7 +12,10 @@
 			"classes/command.php",
 			"classes/migrate-posts.php",
 			"classes/delete-posts.php",
-			"classes/import-posts.php"
+			"classes/import-posts.php",
+			"classes/export-content-report.php",
+			"classes/brightspot/brightspot.php",
+			"classes/database.php"
 		]
 	}
 }
