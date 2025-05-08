@@ -7,6 +7,8 @@
 
 namespace MigrationBoilerplate\Command;
 
+use MigrationBoilerplate\OpenAI\OpenAI;
+
 class ImportPosts extends Command {
 
 	public function __construct() {
