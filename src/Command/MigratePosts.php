@@ -56,6 +56,10 @@ class MigratePosts extends Command {
 	 * @return void
 	 */
 	public function callback( $entry ) {
+
+		$craft = new CraftCMS();
+		$craft->create_post( $entry );
+
 		var_dump($entry);
 		exit;
 	}

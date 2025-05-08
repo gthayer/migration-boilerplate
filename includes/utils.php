@@ -199,3 +199,24 @@ function extract_shortcodes( $shortcode, $html ) {
 	// If there are no matches, return null or an empty array, depending on the use case.
 	return isset( $matches[0] ) ? $matches[0] : null;
 }
+
+/**
+ * Get post ID by meta key and value
+ *
+ * @param string $meta_key Meta key
+ * @param string $meta_value Meta value
+ * @return int|null Post ID on success, null on failure
+ */
+function get_post_id_by_meta( $meta_key, $meta_value ) {
+	global $wpdb;
+
+	$post_id = $wpdb->get_var( // phpcs:ignore
+		$wpdb->prepare(
+			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s",
+			$meta_key,
+			$meta_value
+		)
+	);
+
+	return $post_id;
+}
