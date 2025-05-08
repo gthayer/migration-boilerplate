@@ -1,12 +1,14 @@
 <?php
 /**
  * Export Content Report
+ *
+ * @package MigrationBoilerplate\Command
  */
-namespace MigrationBoilerplate;
+namespace MigrationBoilerplate\Command;
 
 use MigrationBoilerplate\Brightspot\Brightspot;
 
-class ExportContentReport extends MigrationCommand {
+class ExportContentReport extends Command {
 
 	public $site;
 

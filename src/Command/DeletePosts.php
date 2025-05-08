@@ -1,11 +1,15 @@
-<?php 
+<?php
 /**
- * Delete Posts
+ * Delete Posts command class.
+ *
+ * @package MigrationBoilerplate\Command
  */
 
-namespace MigrationBoilerplate;
+namespace MigrationBoilerplate\Command;
 
-class DeletePosts extends MigrationCommand {
+use WP_Error;
+
+class DeletePosts extends Command {
 
 	public function __construct() {
 		parent::__construct();
@@ -98,7 +102,7 @@ class DeletePosts extends MigrationCommand {
 	 * 17 => 'Delete?',
 	 * 18 => 'news_category (Deprecated)',
 	 * 
-	 * @return void
+	 * @return array
 	 */
 	public function get_post_includes() {
 
