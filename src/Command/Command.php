@@ -1,11 +1,16 @@
-<?php 
+<?php
 /**
  * Command Abstract class.
+ *
+ * @package MigrationBoilerplate\Command
  */
 
-namespace MigrationBoilerplate;
+namespace MigrationBoilerplate\Command;
 
-abstract class MigrationCommand {
+use WP_Query;
+use WP_CLI\Utils;
+
+abstract class Command {
 
 	abstract protected function callback( $post_id );
 
@@ -27,11 +32,11 @@ abstract class MigrationCommand {
 	 * @param integer $processed The number of posts processed
 	 * @param integer $found_posts The total number of posts found. 
 	 * @param string  $message The message to display when processing posts.
-	 * @return array/bool
+	 * @return array|bool
 	 */
 	public function query_posts( $args ) {
 
-		$query = new \WP_Query( $args );
+		$query = new WP_Query( $args );
 
 		// Initialize the process. Only runs once.
 		if ( 0 === $this->processed ) {
@@ -52,7 +57,7 @@ abstract class MigrationCommand {
 			// sleep(1);
 
 			if ( ! isset( $this->progress ) ) {
-				$this->progress = \WP_CLI\Utils\make_progress_bar( esc_html( 'Paginating through posts' ), $this->found_posts, 10 );
+				$this->progress = Utils\make_progress_bar( esc_html( 'Paginating through posts' ), $this->found_posts, 10 );
 			}
 		}
 

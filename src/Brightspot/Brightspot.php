@@ -1,6 +1,8 @@
-<?php 
+<?php
 /**
- * Command Abstract class.
+ * Brightspot API integration class.
+ *
+ * @package MigrationBoilerplate\Brightspot
  */
 
 namespace MigrationBoilerplate\Brightspot;
@@ -122,4 +124,4 @@ class Brightspot {
 
         $this->next_url = $next_url;
     }
-}
+} 

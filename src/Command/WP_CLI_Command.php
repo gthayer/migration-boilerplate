@@ -1,17 +1,24 @@
 <?php
 /**
  * Main WP CLI command integration
+ *
+ * @package MigrationBoilerplate\Command
  */
 
-namespace MigrationBoilerplate;
+namespace MigrationBoilerplate\Command;
 
-\WP_CLI::add_command( 'migration-boilerplate', 'MigrationBoilerplate\WP_CLI_Command' );
+use MigrationBoilerplate\Command\DeletePosts;
+use MigrationBoilerplate\Command\MigratePosts;
+use MigrationBoilerplate\Command\ChangePostTypes;
+use MigrationBoilerplate\Command\ImportPosts;
+use MigrationBoilerplate\Command\ExportContentReport;
+use MigrationBoilerplate\Database\Database;
 
 /**
  * Register migration commands.
  * Class WP_CLI_Command
  *
- * @package MigrationBoilerplate
+ * @package MigrationBoilerplate\Command
  */
 class WP_CLI_Command extends \WP_CLI_Command {
 
@@ -20,8 +27,8 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * Can specify offset and the number of posts to import
 	 *
-	 * @param $args
-	 * @param $assoc_args
+	 * @param array $args
+	 * @param array $assoc_args
 	 *
 	 * @return bool
 	 *
@@ -46,7 +53,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 
-		$assoc_args = filter_cli_args( $assoc_args );
+		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
 
 		$migratePosts = new MigratePosts();
 		$migratePosts->migrate_posts( $args, $assoc_args );
@@ -57,8 +64,8 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * Can specify offset and the number of posts to import
 	 *
-	 * @param $args
-	 * @param $assoc_args
+	 * @param array $args
+	 * @param array $assoc_args
 	 *
 	 * @return bool
 	 *
@@ -83,7 +90,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 
-		$assoc_args = filter_cli_args( $assoc_args );
+		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
 
 		$deletePosts = new DeletePosts();
 		$deletePosts->delete_posts( $args, $assoc_args );
@@ -94,8 +101,8 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * Can specify offset and the number of posts to import
 	 *
-	 * @param $args
-	 * @param $assoc_args
+	 * @param array $args
+	 * @param array $assoc_args
 	 *
 	 * @return bool
 	 *
@@ -120,7 +127,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 
-		$assoc_args = filter_cli_args( $assoc_args );
+		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
 
 		$deletePosts = new ChangePostTypes();
 		$deletePosts->change_post_types( $args, $assoc_args );
@@ -131,8 +138,8 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * @todo make import command use column headers to determine data type (post_title, post_content...etc)
 	 *
-	 * @param $args
-	 * @param $assoc_args
+	 * @param array $args
+	 * @param array $assoc_args
 	 *
 	 * @return bool
 	 *
@@ -151,7 +158,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 
-		$assoc_args = filter_cli_args( $assoc_args );
+		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
 
 		$importer = new ImportPosts();
 		$importer->import_posts( $args, $assoc_args );
@@ -160,8 +167,8 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	/**
 	 * Create a report of content types.
 	 *
-	 * @param $args
-	 * @param $assoc_args
+	 * @param array $args
+	 * @param array $assoc_args
 	 *
 	 * @return bool
 	 * 
@@ -179,23 +186,39 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 
-		$assoc_args = filter_cli_args( $assoc_args );
+		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
 
 		$importer = new ExportContentReport();
 		$importer->content_report( $args, $assoc_args );
 	}
 
+	/**
+	 * Export missing items report.
+	 *
+	 * @param array $args
+	 * @param array $assoc_args
+	 *
+	 * @return bool
+	 */
 	public function content_export_missing_items( $args, $assoc_args ) {
 
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 
-		$assoc_args = filter_cli_args( $assoc_args );
+		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
 
 		$importer = new ExportContentReport();
 		$importer->find_missing_items( $args, $assoc_args );
 	}
 
+	/**
+	 * Create migration tables.
+	 *
+	 * @param array $args
+	 * @param array $assoc_args
+	 *
+	 * @return bool
+	 */
 	public function create_migration_tables( $args, $assoc_args ) {
 
 		define( 'WP_IMPORTING', true );
@@ -203,10 +226,18 @@ class WP_CLI_Command extends \WP_CLI_Command {
 		Database::create_tables();
 	}
 
+	/**
+	 * Delete migration tables.
+	 *
+	 * @param array $args
+	 * @param array $assoc_args
+	 *
+	 * @return bool
+	 */
 	public function delete_migration_tables( $args, $assoc_args ) {
 
 		define( 'WP_IMPORTING', true );
 		define( 'WP_ADMIN', true );
 		Database::drop_tables();
 	}
-}
+} 

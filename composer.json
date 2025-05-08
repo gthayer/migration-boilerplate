@@ -5,17 +5,12 @@
 		"php": "^8.2"
 	},
 	"autoload": {
+		"psr-4": {
+			"MigrationBoilerplate\\": "src/"
+		},
 		"files": [
 			"includes/utils.php",
-			"includes/class-wp-cli-command.php",
-			"includes/logging.php",
-			"classes/command.php",
-			"classes/migrate-posts.php",
-			"classes/delete-posts.php",
-			"classes/import-posts.php",
-			"classes/export-content-report.php",
-			"classes/brightspot/brightspot.php",
-			"classes/database.php"
+			"includes/logging.php"
 		]
 	}
 }

@@ -1,11 +1,13 @@
 <?php
 /**
- * Migrate Posts
+ * Import Posts command class.
+ *
+ * @package MigrationBoilerplate\Command
  */
 
-namespace MigrationBoilerplate;
+namespace MigrationBoilerplate\Command;
 
-class ImportPosts extends MigrationCommand {
+class ImportPosts extends Command {
 
 	public function __construct() {
 		parent::__construct();

@@ -3,7 +3,7 @@
         'name' => 'gthayer/migration-boilerplate',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '97a410d04834306c5bef0dbba86304da294042c3',
+        'reference' => 'a7d25bbc4186324421622325955ac2af39b0e9d8',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'gthayer/migration-boilerplate' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '97a410d04834306c5bef0dbba86304da294042c3',
+            'reference' => 'a7d25bbc4186324421622325955ac2af39b0e9d8',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -21,6 +21,9 @@ if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 	return;
 }
 
+// Debug statement
+error_log('Migration Boilerplate plugin is loading');
+
 // Useful global constants.
 define( 'MIGRATION_BOILERPLATE_VERSION', '0.1.0' );
 define( 'MIGRATION_BOILERPLATE_URL', plugin_dir_url( __FILE__ ) );
@@ -33,4 +36,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 // Load our composer files
-require __DIR__ . '/vendor/autoload.php' ;
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Load the bootstrap file
+require_once __DIR__ . '/src/bootstrap.php';

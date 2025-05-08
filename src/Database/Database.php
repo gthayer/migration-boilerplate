@@ -1,9 +1,13 @@
-<?php 
+<?php
 /**
- * Command Abstract class.
+ * Database class for handling migration tables.
+ *
+ * @package MigrationBoilerplate\Database
  */
 
-namespace MigrationBoilerplate;
+namespace MigrationBoilerplate\Database;
+
+use wpdb;
 
 class Database {
 
@@ -15,7 +19,7 @@ class Database {
         $charset_collate = $wpdb->get_charset_collate();
         $table_name = $wpdb->prefix . 'migration_legacy_sitemap';
 
-        // Create the 
+        // Create the tables
         $sql = "CREATE TABLE $table_name (
             url longtext NOT NULL
         ) $charset_collate;";
