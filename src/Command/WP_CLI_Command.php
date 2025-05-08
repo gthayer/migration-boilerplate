@@ -65,7 +65,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
 	 */
-	public function migrate( $args, $assoc_args ) {
+	public function migrate_posts( $args, $assoc_args ) {
 		$assoc_args = $this->init_command( $assoc_args );
 		$migratePosts = new MigratePosts();
 		$migratePosts->migrate_posts( $args, $assoc_args );

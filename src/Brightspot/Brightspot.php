@@ -36,7 +36,7 @@ class Brightspot {
 
         \MigrationBoilerplate\log( 'Fetching token...' );
         // Don't use the api_url here because the path is different.
-        $response = wp_remote_post( 'https://cms.hanleywood.com/api/v1_8/auth/token', array(
+        $response = wp_remote_post( 'https://cms.website.com/api/v1_8/auth/token', array(
             'body' => array(
                 'client_id'     => $this->client_id,
                 'client_secret' => $this->client_secret,
