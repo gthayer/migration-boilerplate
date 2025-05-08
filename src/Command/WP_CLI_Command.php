@@ -23,6 +23,23 @@ use MigrationBoilerplate\Database\Database;
 class WP_CLI_Command extends \WP_CLI_Command {
 
 	/**
+	 * Initialize the command environment.
+	 *
+	 * @param array $assoc_args The associative arguments.
+	 * @return array The filtered arguments.
+	 */
+	protected function init_command( $assoc_args ) {
+		define( 'WP_IMPORTING', true );
+		define( 'WP_ADMIN', true );
+
+		wp_defer_term_counting( true );
+		wp_defer_comment_counting( true );
+		wp_suspend_cache_invalidation( true );
+
+		return \MigrationBoilerplate\filter_cli_args( $assoc_args );
+	}
+
+	/**
 	 * Import Posts
 	 *
 	 * Can specify offset and the number of posts to import
@@ -49,12 +66,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
 	 */
 	public function migrate( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
-
-		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
-
+		$assoc_args = $this->init_command( $assoc_args );
 		$migratePosts = new MigratePosts();
 		$migratePosts->migrate_posts( $args, $assoc_args );
 	}
@@ -86,18 +98,13 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
 	 */
 	public function delete( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
-
-		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
-
+		$assoc_args = $this->init_command( $assoc_args );
 		$deletePosts = new DeletePosts();
 		$deletePosts->delete_posts( $args, $assoc_args );
 	}
 
 	/**
-	 * Delete Posts
+	 * Change post types
 	 *
 	 * Can specify offset and the number of posts to import
 	 *
@@ -123,14 +130,9 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
 	 */
 	public function change_post_types( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
-
-		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
-
-		$deletePosts = new ChangePostTypes();
-		$deletePosts->change_post_types( $args, $assoc_args );
+		$assoc_args = $this->init_command( $assoc_args );
+		$changePostTypes = new ChangePostTypes();
+		$changePostTypes->change_post_types( $args, $assoc_args );
 	}
 
 	/**
@@ -154,12 +156,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @synopsis [--file-path=<file-path>] [--term-type=<term-type>]
 	 */
 	public function import( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
-
-		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
-
+		$assoc_args = $this->init_command( $assoc_args );
 		$importer = new ImportPosts();
 		$importer->import_posts( $args, $assoc_args );
 	}
@@ -182,14 +179,9 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 *
 	 */
 	public function content_export_report( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
-
-		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
-
-		$importer = new ExportContentReport();
-		$importer->content_report( $args, $assoc_args );
+		$assoc_args = $this->init_command( $assoc_args );
+		$exporter = new ExportContentReport();
+		$exporter->content_report( $args, $assoc_args );
 	}
 
 	/**
@@ -201,14 +193,9 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @return bool
 	 */
 	public function content_export_missing_items( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
-
-		$assoc_args = \MigrationBoilerplate\filter_cli_args( $assoc_args );
-
-		$importer = new ExportContentReport();
-		$importer->find_missing_items( $args, $assoc_args );
+		$assoc_args = $this->init_command( $assoc_args );
+		$exporter = new ExportContentReport();
+		$exporter->find_missing_items( $args, $assoc_args );
 	}
 
 	/**
@@ -220,9 +207,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @return bool
 	 */
 	public function create_migration_tables( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
+		$this->init_command( $assoc_args );
 		Database::create_tables();
 	}
 
@@ -235,9 +220,7 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * @return bool
 	 */
 	public function delete_migration_tables( $args, $assoc_args ) {
-
-		define( 'WP_IMPORTING', true );
-		define( 'WP_ADMIN', true );
+		$this->init_command( $assoc_args );
 		Database::drop_tables();
 	}
 } 
