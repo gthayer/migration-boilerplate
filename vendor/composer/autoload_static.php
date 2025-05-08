@@ -8,7 +8,6 @@ class ComposerStaticInit71d4864510422e3e8b28147ea3dbe10b
 {
     public static $files = array (
         'ed233f3c5c707ba194f8d7d712f5015a' => __DIR__ . '/../..' . '/includes/utils.php',
-        '128bec78be347a5c16ad59ffe114c855' => __DIR__ . '/../..' . '/includes/logging.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -27,15 +26,6 @@ class ComposerStaticInit71d4864510422e3e8b28147ea3dbe10b
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'MigrationBoilerplate\\Brightspot\\Brightspot' => __DIR__ . '/../..' . '/src/Brightspot/Brightspot.php',
-        'MigrationBoilerplate\\Command\\Command' => __DIR__ . '/../..' . '/src/Command/Command.php',
-        'MigrationBoilerplate\\Command\\DeletePosts' => __DIR__ . '/../..' . '/src/Command/DeletePosts.php',
-        'MigrationBoilerplate\\Command\\ExportContentReport' => __DIR__ . '/../..' . '/src/Command/ExportContentReport.php',
-        'MigrationBoilerplate\\Command\\ImportPosts' => __DIR__ . '/../..' . '/src/Command/ImportPosts.php',
-        'MigrationBoilerplate\\Command\\MigratePosts' => __DIR__ . '/../..' . '/src/Command/MigratePosts.php',
-        'MigrationBoilerplate\\Command\\TestCommand' => __DIR__ . '/../..' . '/src/Command/TestCommand.php',
-        'MigrationBoilerplate\\Command\\WP_CLI_Command' => __DIR__ . '/../..' . '/src/Command/WP_CLI_Command.php',
-        'MigrationBoilerplate\\Database\\Database' => __DIR__ . '/../..' . '/src/Database/Database.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

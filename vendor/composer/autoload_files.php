@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ed233f3c5c707ba194f8d7d712f5015a' => $baseDir . '/includes/utils.php',
-    '128bec78be347a5c16ad59ffe114c855' => $baseDir . '/includes/logging.php',
 );

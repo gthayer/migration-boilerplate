@@ -9,8 +9,7 @@
 			"MigrationBoilerplate\\": "src/"
 		},
 		"files": [
-			"includes/utils.php",
-			"includes/logging.php"
+			"includes/utils.php"
 		]
 	}
 }

@@ -7,13 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'MigrationBoilerplate\\Brightspot\\Brightspot' => $baseDir . '/src/Brightspot/Brightspot.php',
-    'MigrationBoilerplate\\Command\\Command' => $baseDir . '/src/Command/Command.php',
-    'MigrationBoilerplate\\Command\\DeletePosts' => $baseDir . '/src/Command/DeletePosts.php',
-    'MigrationBoilerplate\\Command\\ExportContentReport' => $baseDir . '/src/Command/ExportContentReport.php',
-    'MigrationBoilerplate\\Command\\ImportPosts' => $baseDir . '/src/Command/ImportPosts.php',
-    'MigrationBoilerplate\\Command\\MigratePosts' => $baseDir . '/src/Command/MigratePosts.php',
-    'MigrationBoilerplate\\Command\\TestCommand' => $baseDir . '/src/Command/TestCommand.php',
-    'MigrationBoilerplate\\Command\\WP_CLI_Command' => $baseDir . '/src/Command/WP_CLI_Command.php',
-    'MigrationBoilerplate\\Database\\Database' => $baseDir . '/src/Database/Database.php',
 );
