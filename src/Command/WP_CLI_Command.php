@@ -54,16 +54,10 @@ class WP_CLI_Command extends \WP_CLI_Command {
 	 * [<offset>]
 	 * : Let's you skip the first n posts.
 	 *
-	 * [<per-page>]
-	 * : Let's you determine the amount of posts to be indexed per bulk index.
+	 * [<legacy-id>]
+	 * : The legacy ID of the post to migrate.
 	 *
-	 * [<include>]
-	 * : Choose which object IDs to include in the index.
-	 *
-	 * [<file-path>]
-	 * : The path to a CSV to read from.
-	 *
-	 * @synopsis [--offset=<offset>] [--per-page=<per-page>] [--include=<include>] [--file-path=<file-path>]
+	 * @synopsis [--offset=<offset>] [--legacy-id=<legacy-id>]
 	 */
 	public function migrate_posts( $args, $assoc_args ) {
 		$assoc_args = $this->init_command( $assoc_args );

@@ -24,20 +24,16 @@ class MigratePosts extends Command {
 	 */
 	public function migrate_posts( $args, $assoc_args ) {
 
-		// Move the file path into the object.
-		if ( isset( $assoc_args['file-path'] ) ) {
-			$this->file_path = $assoc_args['file-path'];
-			unset( $assoc_args['file-path'] );
-		}
+		$legacy_id = $assoc_args['legacy-id'] ?? null;
 
-		$this->migrate_content();
+		$this->migrate_content( 0, $legacy_id );
 	}
 
-	public function migrate_content( $offset = 0 ) {
+	public function migrate_content( $offset = 0, $legacy_id = null ) {
 		// blogArticles?
 		$type_id = 34;
 		$craft = new CraftCMS();
-		$entries = $craft->get_entries( $type_id, 100, $offset );
+		$entries = $craft->get_entries( $type_id, 100, $offset, $legacy_id );
 
 		foreach ( $entries as $entry ) {
 			$this->callback( $entry );
@@ -59,8 +55,5 @@ class MigratePosts extends Command {
 
 		$craft = new CraftCMS();
 		$craft->create_post( $entry );
-
-		var_dump($entry);
-		exit;
 	}
 }

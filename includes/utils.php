@@ -220,3 +220,128 @@ function get_post_id_by_meta( $meta_key, $meta_value ) {
 
 	return $post_id;
 }
+
+/**
+ * Convert HTML to block markup.
+ *
+ * @param string $html The HTML content.
+ *
+ * @return string
+ */
+function html_to_block_markup( $html ) {
+	$html_fixes = [
+		// Remove styles from all elements except images and figures.
+		'/<(?!img|figure)([a-z0-9]+)([^>]*?)\s*style="[^"]*"\s*([^>]*)>/i' => '<$1 $2 $3>',
+
+		// P tags.
+		'/<p[^>]*>/'                                   => '<!-- wp:paragraph --><p>',
+		'/<\/p>/'                                      => '</p><!-- /wp:paragraph -->',
+		'/<!-- wp:paragraph --><!-- wp:paragraph -->/' => '<!-- wp:paragraph -->',
+		'/<!-- \/wp:paragraph --><!-- \/wp:paragraph -->/' => '<!-- /wp:paragraph -->',
+
+		// H tags.
+		'/<h1[^>]*>/'                                  => '<!-- wp:heading {"level":1} --><h1>',
+		'/<h2[^>]*>/'                                  => '<!-- wp:heading {"level":2} --><h2>',
+		'/<h3[^>]*>/'                                  => '<!-- wp:heading {"level":3} --><h3>',
+		'/<h4[^>]*>/'                                  => '<!-- wp:heading {"level":4} --><h4>',
+		'/<h5[^>]*>/'                                  => '<!-- wp:heading {"level":5} --><h5>',
+		'/<h6[^>]*>/'                                  => '<!-- wp:heading {"level":6} --><h6>',
+		'/<\/h1>/'                                     => '</h1><!-- /wp:heading -->',
+		'/<\/h2>/'                                     => '</h2><!-- /wp:heading -->',
+		'/<\/h3>/'                                     => '</h3><!-- /wp:heading -->',
+		'/<\/h4>/'                                     => '</h4><!-- /wp:heading -->',
+		'/<\/h5>/'                                     => '</h5><!-- /wp:heading -->',
+		'/<\/h6>/'                                     => '</h6><!-- /wp:heading -->',
+		'/<!-- wp:heading {"level":1} --><!-- wp:heading {"level":1} -->/' => '<!-- wp:heading {"level":1} -->',
+		'/<!-- wp:heading {"level":2} --><!-- wp:heading {"level":2} -->/' => '<!-- wp:heading {"level":2} -->',
+		'/<!-- wp:heading {"level":3} --><!-- wp:heading {"level":3} -->/' => '<!-- wp:heading {"level":3} -->',
+		'/<!-- wp:heading {"level":4} --><!-- wp:heading {"level":4} -->/' => '<!-- wp:heading {"level":4} -->',
+		'/<!-- wp:heading {"level":5} --><!-- wp:heading {"level":5} -->/' => '<!-- wp:heading {"level":5} -->',
+		'/<!-- wp:heading {"level":6} --><!-- wp:heading {"level":6} -->/' => '<!-- wp:heading {"level":6} -->',
+		'/<!-- \/wp:heading --><!-- \/wp:heading -->/' => '<!-- /wp:heading -->',
+
+		// Lists.
+		'/<ul[^>]*>/'                                  => '<!-- wp:list {"ordered":false} --><ul>',
+		'/<ol[^>]*>/'                                  => '<!-- wp:list {"ordered":true} --><ol>',
+		'/<\/ul>/'                                     => '</ul><!-- /wp:list -->',
+		'/<\/ol>/'                                     => '</ol><!-- /wp:list -->',
+		'/<!-- wp:list {"ordered":false} --><!-- wp:list {"ordered":false} -->/' => '<!-- wp:list {"ordered":false} -->',
+		'/<!-- wp:list {"ordered":true} --><!-- wp:list {"ordered":true} -->/' => '<!-- wp:list {"ordered":true} -->',
+		'/<!-- \/wp:list --><!-- \/wp:list -->/'       => '<!-- /wp:list -->',
+
+		// List Items.
+		'/<li[^>]*>/'                                  => '<!-- wp:list-item --><li>',
+		'/<\/li>/'                                     => '</li><!-- /wp:list-item -->',
+		'/<!-- wp:list-item --><!-- wp:list-item -->/' => '<!-- wp:list-item -->',
+		'/<!-- \/wp:list-item --><!-- \/wp:list-item -->/' => '<!-- /wp:list-item -->',
+
+		// Tables. -- TODO: Legacy tables include attributes like cell merging which are not supported by the block editor.
+		'/<table[^>]*>/'                               => '<!-- wp:table --><figure class="wp-block-table"><table class="has-fixed-layout">',
+		'/<\/table>/'                                  => '</table></figure><!-- /wp:table -->',
+		'/<!-- wp:table --><figure class="wp-block-table"><!-- wp:table --><figure class="wp-block-table">/' => '<!-- wp:table --><figure class="wp-block-table">',
+		'/<\/figure><!-- \/wp:table --><\/figure><!-- \/wp:table -->/' => '</figure><!-- /wp:table -->',
+
+		// Special Characters.
+		'/\&nbsp;/'                                    => ' ',
+		'/\&amp;/'                                     => '&',
+		'/\&quot;/'                                    => '"',
+		'/\&apos;/'                                    => "'",
+		'/\&lt;/'                                      => '<',
+		'/\&gt;/'                                      => '>',
+
+		// Whitespace
+		'/  /'                                         => ' ',
+		'/\n/'                                         => '',
+
+		// Fake elements?
+		'/<hl2>/'                                      => '',
+		'/<\/hl2>/'                                    => '',
+
+		// Divs.
+		'/<div class="clear"[^>]*>.*?<\/div>/s'        => '',
+		'/<div id="articleExtras"[^>]*>.*?<\/div>/s'   => '',
+		'/<div(?![^>]*class="wp-block-group")[^>]*>/'  => '<!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group">',
+		'/<\/div>/'                                    => '</div><!-- /wp:group -->',
+		'/<!-- \/wp:group --><!-- \/wp:group -->/'     => '<!-- /wp:group -->',
+	];
+
+	$markup = $html;
+	foreach ( $html_fixes as $search => $replace ) {
+		$markup = preg_replace( $search, $replace, $markup );
+	}
+
+	return $markup;
+}
+
+/**
+ * Maybe create a term.
+ *
+ * @param array $item The term data.
+ * @param string $taxonomy The taxonomy to create the term in.
+ * @return int|array Term ID on success, 0 on failure
+ */
+function maybe_create_term_by_name( $term_name, $taxonomy, $parent_name = null, $description = null ) {
+	// Check if the term exists. If so, return the WP data.
+	$term = term_exists( $term_name, $taxonomy );
+	if ( ! empty( $term ) ) {
+		return $term;
+	}
+
+	// If the term has parents, recursively check until you find a known parent, building new terms along the way.
+	if ( ! empty( $parent_name ) ) {
+		$wp_parent = maybe_create_term_by_name( $parent_name, $taxonomy );
+		$parent_id = $wp_parent['term_id'] ?? 0;
+	}
+
+	// Create the term.
+	$resp = wp_insert_term(
+		$term_name,
+		$taxonomy,
+		[
+			'description' => $description,
+			'parent'      => $parent_id,
+		]
+	);
+
+	return $resp;
+}
